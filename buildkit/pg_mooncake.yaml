@@ -1,0 +1,36 @@
+apiVersion: v1
+name: pg_mooncake
+version: "0.1.0-pre+33c7aac"
+homepage: https://github.com/Mooncake-Labs/pg_mooncake
+repository: https://github.com/Mooncake-Labs/pg_mooncake
+source: https://github.com/Mooncake-Labs/pg_mooncake/archive/33c7aac2a2826205215020ffce6730865bfff8e5.tar.gz # unused
+description: Postgres columnstore table powered by DuckDB and backed by open table format
+license: MIT
+keywords:
+  - Analytics
+  - Columnstore
+  - DuckDB
+  - Iceberg
+  - Delta
+arch:
+  - amd64
+#  - arm64
+maintainers:
+  - name: Cheng Chen
+    email: cheng@mooncakelabs.com
+pgVersions:
+  - "15"
+#  - "16"
+build:
+  main:
+    - name: Build pg_mooncake
+      run: |
+        git clone --recurse-submodules -j8 https://github.com/Mooncake-Labs/pg_mooncake.git
+        cd pg_mooncake
+        git checkout 33c7aac
+        make release -j8
+        DESTDIR=${DESTDIR} make install
+builders:
+  debian:bookworm:
+   buildDependencies:
+    - liblz4-dev
